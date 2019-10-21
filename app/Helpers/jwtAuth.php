@@ -28,7 +28,7 @@ class jwtAuth{
 
         //generar el token con los datos del usuario identificado
         if($signup){
-            $token =array(
+            $token = array(
                 'sub'=>$user->id,
                 'email'=>$user->email,
                 'name' => $user->name,
@@ -39,14 +39,14 @@ class jwtAuth{
 
             $jwt = JWT::encode($token,$this->key,'HS256');
 
-            $decoded =JWT::decode($jwt,$this->key,['HS256']);
 
             //devolver los datos decodificados o el token, en funcion de un parametro
-            if(is_null($getToken)){
-                $data = $jwt;
-            }else{
-                $data = $decoded;
-            }
+                $data =array(
+                    'status'=>'success',
+                    'name_user'=> $user->name,
+                    'user_type'=>$user->user_type,
+                    'message'=> $jwt
+                );
 
         }else{
 

@@ -27,7 +27,8 @@ class UserController extends Controller
             'name'      => 'required|alpha',
             'surname'   => 'required|alpha',
             'email'     => 'required|email|unique:users',
-            'password'  => 'required'
+            'password'  => 'required',
+            'user_type' => 'required'
         ]);
 
      
@@ -36,7 +37,7 @@ class UserController extends Controller
             $data = array(
                 'status'    => 'error',
                 'code'      => 404,
-                'message'   => 'el usuario no se ha creado',
+                'message'   => 'El usuario no se ha creado',
                 'errors'    => $validate->errors()
             );
             
@@ -53,14 +54,15 @@ class UserController extends Controller
             $user->surname= $param_array['surname'];
             $user->email= $param_array['email'];
             $user->password=$pdw;
+            $user->user_type= $param_array['user_type'];
 
            //insertar datos en la tabla users
             $user->save();
 
             $data = array(
-                'status'    => 'sucess',
+                'status'    => 'success',
                 'code'      => 200,
-                'message'   => 'el usuario se ha creado correctamente',
+                'message'   => 'El usuario se ha creado correctamente',
                 'user'=> $user
             );
         }
@@ -103,20 +105,5 @@ class UserController extends Controller
             }
         }
         return  response()->json($signup,200);
-    }
-
-    public function update(Request $request){
-        
-        $token = $request->header('Authorization');
-        $jwtAuth= new \JWTAuth();
-        $checkToken= $jwtAuth->checkToken($token);
-        
-        if($checkToken){
-            echo "<h1>login correcto</h1>";
-        }else{
-            echo "<h1>login incorrecto</h1>";
-        }
-
-        die();
     }
 }
