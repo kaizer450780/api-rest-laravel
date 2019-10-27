@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 
-class UserController extends Controller
-{
+class UserController extends Controller{
     public function pruebas(Request $request){
         return "accion de pruebas de USER-CONTROLLER" ;
     }
@@ -105,5 +104,38 @@ class UserController extends Controller
             }
         }
         return  response()->json($signup,200);
+    }
+
+    public function update(Request $request){
+        //comprobar si el usuario esta identificado
+        $token= $request->header('Authorization');
+        $jwtAuth = new \JWTAuth();
+        $checkToken=$jwtAuth->checkToken($token);
+
+        if($checkToken){
+            //actualizar usuario
+            //recoger los datos del usurio por post
+            $json = $request -> input('json', null);
+            $param= json_decode($json);//objeto
+            $param_array =json_decode($json,true);//array
+
+            //validar datos
+            $validate = \Validator::make($param_array,[
+                'name'      => 'required|alpha',
+                'surname'   => 'required|alpha',
+                'email'     => 'required|email|unique:users',
+                'user_type' => 'required'
+            ]);
+
+
+        }else{
+             $data = array(
+                'status'    => 'error',
+                'code'      => 400,
+                'message'   => 'El usuario se ha identificado correctamente'
+            );
+        }
+
+        return  response()->json($data,$data['code']);
     }
 }
