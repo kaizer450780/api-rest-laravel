@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('usuario/pruebas','UserController@pruebas');
+Route::get('reserva/pruebas','ReservaController@pruebas');
 
 //api routes
 Route::post('api/register','UserController@register');
@@ -25,3 +25,7 @@ Route::post('api/user/update','UserController@update');
 //rutas del controlador de escenarios 
 
 Route::resource('api/escenarios','EscenarioController');
+
+//ruta controlador de reservas
+
+Route::get('api/reserva/{id}','ReservaController@reservas');

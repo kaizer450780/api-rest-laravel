@@ -18,4 +18,5 @@ class EscenarioController extends Controller
             'escenarios'=> $escenarios
        ]);
     }
+
 }

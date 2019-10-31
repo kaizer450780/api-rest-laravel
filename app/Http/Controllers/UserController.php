@@ -107,6 +107,7 @@ class UserController extends Controller{
     }
 
     public function update(Request $request){
+
         //comprobar si el usuario esta identificado
         $token= $request->header('Authorization');
         $jwtAuth = new \JWTAuth();
@@ -116,14 +117,16 @@ class UserController extends Controller{
             //actualizar usuario
             //recoger los datos del usurio por post
             $json = $request -> input('json', null);
-            $param= json_decode($json);//objeto
             $param_array =json_decode($json,true);//array
+
+            //sacar usuario identificado
+            $user = $jwtAuth->checkToken($token,true);
 
             //validar datos
             $validate = \Validator::make($param_array,[
                 'name'      => 'required|alpha',
                 'surname'   => 'required|alpha',
-                'email'     => 'required|email|unique:users',
+                'email'     => 'required|email|unique:users'.$user->sub,
                 'user_type' => 'required'
             ]);
 
