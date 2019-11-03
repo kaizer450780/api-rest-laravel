@@ -97,11 +97,6 @@ class ReservaController extends Controller
         ->where('reserva.estado','=',$estado)
         ->get(['reserva.id','escenarios.nombre','escenarios.codigo', 'reserva.fecha_inicial','reserva.fecha_final','users.name','users.email']);
 
-        $segundojoin=Reserva::join("users","reserva.id_users","=","users.id_user")
-        ->where('reserva.estado','=',$estado)
-        ->get(['users.name','users.email']);
-
-        //$reserva =json_encode($reservas);
 
         if(is_object($reserva)){
 
