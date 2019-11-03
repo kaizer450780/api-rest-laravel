@@ -30,3 +30,4 @@ Route::resource('api/escenarios','EscenarioController');
 
 Route::get('api/reserva/{id}','ReservaController@reservas');
 Route::post('api/reserva/crear','ReservaController@registrarReserva');
+Route::get('api/reserva/pendientes/{estado}','ReservaController@reservasPendientes');

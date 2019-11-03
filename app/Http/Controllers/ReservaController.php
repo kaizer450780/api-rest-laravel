@@ -38,47 +38,107 @@ class ReservaController extends Controller
                 $param_array =json_decode($json,true);//array
                 
                 
-                $param_array= array_map('trim',$param_array);
-        
-                //validar datos
-                $validate = \Validator::make($param_array,[
-                    'fecha_inicial' => 'required',
-                    'fecha_final'   => 'required',
-                    'estado'  => 'required|alpha'
-                ]);
-        
-             
-        
-                if($validate->fails()){
-                    $data = array(
-                        'status'    => 'error',
-                        'code'      => 404,
-                        'message'   => 'la reserva no se ha creado',
-                        'errors'    => $validate->errors()
-                    );
+                //$param_array= array_map('trim',$param_array);
+                $count= count($param_array);
+                for($i = 0; $i < $count; $i++){
                     
-                }else{
-                    //validacion correctamente
-        
-                    //crear el usuario
-                    $reserva =new Reserva();
-                    $id_users->id_users= $param_array['id_users'];
-                    $id_escenarios->id_escenarios= $param_array['id_escenarios'];
-                    $fecha_inicial->fecha_inicial= $param_array['fecha_inicial'];
-                    $fecha_final->fecha_final=$param_array['fecha_final'];;
-                    $estado->estado= $param_array['estado'];
-        
-                   //insertar datos en la tabla users
-                    $reserva->save();
-        
-                    $data = array(
-                        'status'    => 'success',
-                        'code'      => 200,
-                        'message'   => 'la reserva se ha creado correctamente',
-                        'reserva'=> $reserva
-                    );
+
+                    //validar datos
+                    $validate = \Validator::make($param_array[$i],[
+                        'fecha_inicial' => 'required',
+                        'fecha_final'   => 'required',
+                        'estado'  => 'required|alpha'
+                    ]);
+                    
+                    $array = $param_array[$i];
+                    
+
+                    if($validate->fails()){
+                        $data = array(
+                            'status'    => 'error',
+                            'code'      => 404,
+                            'message'   => 'la reserva no se ha creado',
+                            'errors'    => $validate->errors()
+                        );
+                        
+                    }else{
+                        //validacion correctamente
+                            //crear el usuario
+                            $reserva =new Reserva();
+                            
+                            $reserva->id_users= $array['id_users'];
+                            $reserva->id_escenarios= $array['id_escenarios'];
+                            $reserva->fecha_inicial= $array['fecha_inicial'];
+                            $reserva->fecha_final=$array['fecha_final'];;
+                            $reserva->estado= $array['estado'];
+    
+                            //insertar datos en la tabla users
+                            $reserva->save();
+            
+                            $data = array(
+                                'status'    => 'success',
+                                'code'      => 200,
+                                'message'   => 'la reserva se ha creado correctamente',
+                                'reserva'=> 'reserva realizada'
+                            );
+                    }
+                    
                 }
-                return response()->json($data,$data['code']);
+                
+                return response()->json($data,$data['code']); 
+                
                 
     }
+
+    public function reservasPendientes($estado){
+
+        $reserva = Reserva::join("escenarios","reserva.id_escenarios","=","escenarios.id")
+        ->where('reserva.estado','=',$estado)
+        ->get(['reserva.id','escenarios.nombre','escenarios.codigo', 'reserva.fecha_inicial','reserva.fecha_final']);
+
+
+
+        if(is_object($reserva)){
+
+            $data=array(
+                'code'=> 200,
+                'status'=>'sucess',
+                'reserva'=>$reserva
+            );
+        }else{
+            $data=array(
+                'code'=> 400,
+                'status'=>'error',
+                'message'=>'el escenario no tiene reservas'
+            );
+        }
+
+         return response()->json($data,$data['code']);
+    }
+
+    public function actualizarReserva($id,$estado){
+
+        $reserva=Reserva::find($id);
+        $reserva->estado = $estado;
+        $reserva->save();
+
+        if(is_object($reserva)){
+
+            $data=array(
+                'code'=> 200,
+                'status'=>'sucess',
+                'reserva'=>$reserva
+            );
+        }else{
+            $data=array(
+                'code'=> 400,
+                'status'=>'error',
+                'message'=>'error en el cambio de estado'
+            );
+        }
+
+         return response()->json($data,$data['code']);
+    }
+
+
 }
