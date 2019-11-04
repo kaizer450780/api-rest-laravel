@@ -116,11 +116,18 @@ class ReservaController extends Controller
          return response()->json($data,$data['code']);
     }
 
-    public function actualizarReserva($id,$estado){
+    public function actualizarReserva(Request $request){
 
-        $reserva=Reserva::find($id);
-        $reserva->estado = $estado;
+        //recoger los datos del usurio por post
+        $json = $request -> input('json', null);
+        $param_array =json_decode($json,true);//array
+
+
+        $reserva=Reserva::find($param_array['id']);
+        $reserva->estado = $param_array['estado'];
         $reserva->save();
+
+
 
         if(is_object($reserva)){
 
