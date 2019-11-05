@@ -10,7 +10,7 @@ use App\Reserva;
 class ReservaController extends Controller
 {
     public function reservas($id){
-        //print($id); die();
+        
         $reserva=Reserva::where('id_escenarios',$id) -> get();
 
         if(is_object($reserva)){

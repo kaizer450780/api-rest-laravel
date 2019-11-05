@@ -32,3 +32,10 @@ Route::get('api/reserva/{id}','ReservaController@reservas');
 Route::post('api/reserva/crear','ReservaController@registrarReserva');
 Route::get('api/reserva/pendientes/{estado}','ReservaController@reservasPendientes');
 Route::post('api/reserva/actualizar','ReservaController@actualizarReserva');
+
+
+//rutas del controlador de implementos
+Route::resource('api/implementos','ImplementosController');
+
+//ruta controlador de prestamos
+
