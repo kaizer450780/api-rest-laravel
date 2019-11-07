@@ -39,3 +39,9 @@ Route::resource('api/implementos','ImplementosController');
 
 //ruta controlador de prestamos
 
+Route::get('api/prestamo/{id}','PrestamoController@prestamo');
+Route::post('api/prestamo/crear','PrestamoController@registrarPrestamo');
+
+//ruta envio de correos
+
+Route::post('api/reserva/correo', 'EmailController@contact')->name('contact');

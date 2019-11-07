@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Prestamo;
+use App\Implementos;
 
 
 class PrestamoController extends Controller
@@ -13,7 +14,7 @@ class PrestamoController extends Controller
     public function prestamo($id){
         
         $prestamo=Prestamo::where('id_implementos',$id) -> get();
-
+       
         if(is_object($prestamo)){
 
             $data=array(
@@ -37,11 +38,15 @@ class PrestamoController extends Controller
         //recoger los datos del usurio por post
         $json = $request -> input('json', null);
         $param_array =json_decode($json,true);//array
+        $auxjson=$param_array['id_implementos'];
         
+        $implementos=Implementos::where('id',$auxjson)->get();
         
-        //$param_array= array_map('trim',$param_array);
-        $count= count($param_array);
-        for($i = 0; $i < $count; $i++){
+        return response()->json($implementos); die();
+        
+        $param_array= array_map('trim',$param_array);
+        //$count= count($param_array);
+        //for($i = 0; $i < $count; $i++){
             
 
             //validar datos
@@ -83,11 +88,11 @@ class PrestamoController extends Controller
                         'status'    => 'success',
                         'code'      => 200,
                         'message'   => 'el prestamo se ha creado correctamente',
-                        'reserva'=> 'prestamo realizado'
+                        'prestamo'=>  $prestamo
                     );
             }
             
-        }
+        //}
         
         return response()->json($data,$data['code']); 
         
