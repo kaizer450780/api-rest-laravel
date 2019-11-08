@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Mail;
 use App\Reserva;
+use Illuminate\Support\Facades\Mail;
 
 class EmailController extends Controller
 {
@@ -24,15 +24,23 @@ class EmailController extends Controller
         ->where('reserva.id','=',$id)
         ->get(['reserva.id','escenarios.nombre','escenarios.codigo', 'reserva.fecha_inicial','reserva.fecha_final','reserva.estado','users.name','users.email']);
 
-        return response()->json($reserva);
+        //se extrae el correo de la consulta a la base de datos
+        $array_correo =json_decode($reserva,true);//array
+        $aux= $array_correo[0];
+        $correo= $aux['email'];
 
+        //datos y envio del correo electronico
         $subject = "notificacion reserva de escenarios";
-        $for = "correo_que_recibira_el_mensaje@gmail.com";
-        Mail::send('email',$reserva->all(), function($msj) use($subject,$for){
-            $msj->from("tucorreo@gmail.com","NombreQueApareceráComoEmisor");
+        $for = $correo;
+        Mail::send('email.correo',$aux, function($msj) use($subject,$for){
+            $msj->from("kaizer450450@gmail.com","Reservas Poli");
             $msj->subject($subject);
             $msj->to($for);
         });
-        return redirect()->back();
+        return $data = array(
+            'status'    => 'success',
+            'code'      => 200,
+            'message'   => 'el correo fue enviado correctamente'
+        );;
     }
 }
