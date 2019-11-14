@@ -30,13 +30,14 @@ class EmailController extends Controller
         $correo= $aux['email'];
 
         //datos y envio del correo electronico
-        $subject = "notificacion reserva de escenarios";
+        $subject = "Notificacion reserva de escenarios";
         $for = $correo;
         Mail::send('email.correo',$aux, function($msj) use($subject,$for){
             $msj->from("kaizer450450@gmail.com","Reservas Poli");
             $msj->subject($subject);
             $msj->to($for);
         });
+        
         return $data = array(
             'status'    => 'success',
             'code'      => 200,

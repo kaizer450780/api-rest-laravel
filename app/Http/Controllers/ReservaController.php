@@ -147,5 +147,38 @@ class ReservaController extends Controller
          return response()->json($data,$data['code']);
     }
 
+    public function reservasPendientesDiaActual(Request $request){
+
+          //recoger los datos del usurio por post
+        $json = $request -> input('json', null);
+        $param_array =json_decode($json,true);//array
+
+        $from=$param_array['fecha_hoy'];
+        $to=$param_array['fecha_hoy_final'];
+
+        $reserva = Reserva::join("escenarios","reserva.id_escenarios","=","escenarios.id")
+        ->join("users","reserva.id_users","=","users.id_user")
+        ->whereBetween('reserva.fecha_inicial',[$from,$to])
+        ->get(['reserva.id','escenarios.nombre','escenarios.codigo', 'reserva.fecha_inicial','reserva.fecha_final']);
+
+
+        if(is_object($reserva)){
+
+            $data=array(
+                'code'=> 200,
+                'status'=>'sucess',
+                'reserva'=>$reserva
+            );
+        }else{
+            $data=array(
+                'code'=> 400,
+                'status'=>'error',
+                'message'=>'el escenario no tiene reservas'
+            );
+        }
+
+         return response()->json($data,$data['code']);
+    }
+
 
 }

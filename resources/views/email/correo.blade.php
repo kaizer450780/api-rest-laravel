@@ -5,8 +5,8 @@
     </head>
    
     <body>
-        <h2>correo estado reserva</h2>
-        <div>su reserva : 
+        <h2>Correo estado reserva</h2>
+        <div>Su reserva : 
             <ol>
                 <li>Id: {!! $id !!}</li>
                 <li>Nombre :  {!! $name !!}</li>
@@ -15,7 +15,7 @@
                 <li>fecha y hora inicial : {!! $fecha_inicial !!}</li>
                 <li>fecha y hora final : {!! $fecha_final !!}</li>
                 <li>Estado : {!! $estado !!}</li>
-              </ol>
+            </ol>
         </div>
     </body>
 </html>

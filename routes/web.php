@@ -27,15 +27,16 @@ Route::post('api/user/update','UserController@update');
 Route::resource('api/escenarios','EscenarioController');
 
 //ruta controlador de reservas
-
-Route::get('api/reserva/{id}','ReservaController@reservas');
-Route::post('api/reserva/crear','ReservaController@registrarReserva');
-Route::get('api/reserva/pendientes/{estado}','ReservaController@reservasPendientes');
 Route::post('api/reserva/actualizar','ReservaController@actualizarReserva');
+Route::post('api/reserva/crear','ReservaController@registrarReserva');
+Route::post('api/reserva/pendientesHoy','ReservaController@reservasPendientesDiaActual');
+Route::get('api/reserva/pendientes/{estado}','ReservaController@reservasPendientes');
+Route::get('api/reserva/{id}','ReservaController@reservas');
 
 
 //rutas del controlador de implementos
-Route::resource('api/implementos','ImplementosController');
+Route::get('api/implementos','ImplementosController@implementos');
+Route::get('api/implementos/seleccion/{implemento}','ImplementosController@verImplemento');
 
 //ruta controlador de prestamos
 
