@@ -36,11 +36,9 @@ Route::get('api/reserva/{id}','ReservaController@reservas');
 
 //rutas del controlador de implementos
 Route::get('api/implementos','ImplementosController@implementos');
-Route::get('api/implementos/seleccion/{implemento}','ImplementosController@verImplemento');
+Route::get('api/implementos/seleccion/{implemento}','ImplementosController@verPrestamoImplemento');
 
 //ruta controlador de prestamos
-
-Route::get('api/prestamo/{id}','PrestamoController@prestamo');
 Route::post('api/prestamo/crear','PrestamoController@registrarPrestamo');
 
 //ruta envio de correos
