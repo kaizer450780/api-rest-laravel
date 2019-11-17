@@ -39,7 +39,7 @@ class ImplementosController extends Controller
 
           $reserva = Implementos::join("prestamo","implementos.id","=","prestamo.id_implementos")
         ->where('implementos.descripcion','=',$implemento)
-        ->get(['implementos.id','implementos.placa','implementos.descripcion','prestamo.fecha_inicial','prestamo.fecha_final']);
+        ->get(['implementos.id','implementos.placa','implementos.descripcion','prestamo.fecha_inicial','prestamo.fecha_final','prestamo.estado']);
 
           return response()->json([
                'code' => 200,

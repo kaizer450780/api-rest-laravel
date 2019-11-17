@@ -80,4 +80,49 @@ class PrestamoController extends Controller
         
         
     }
+
+
+    public function PrestamoImplementopendientes(){
+
+        $reserva = Implementos::join("prestamo","implementos.id","=","prestamo.id_implementos")
+      ->where('prestamo.estado','=','pendiente')
+      ->get(['implementos.id','implementos.placa','implementos.descripcion','prestamo.fecha_inicial','prestamo.fecha_final','prestamo.estado']);
+
+        return response()->json([
+             'code' => 200,
+             'status'=> 'sucess',
+             'implementos'=> $reserva
+        ]);
+     }
+
+     public function actualizarPrestamo(Request $request){
+
+        //recoger los datos del usurio por post
+        $json = $request -> input('json', null);
+        $param_array =json_decode($json,true);//array
+
+
+        $prestamo=Prestamo::find($param_array['id']);
+        $prestamo->estado = $param_array['estado'];
+        $prestamo->save();
+
+
+
+        if(is_object($prestamo)){
+
+            $data=array(
+                'code'=> 200,
+                'status'=>'sucess',
+                'reserva'=>$prestamo
+            );
+        }else{
+            $data=array(
+                'code'=> 400,
+                'status'=>'error',
+                'message'=>'error en el cambio de estado'
+            );
+        }
+
+         return response()->json($data,$data['code']);
+    }
 }
