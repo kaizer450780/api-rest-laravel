@@ -40,7 +40,7 @@ Route::get('api/implementos/seleccion/{implemento}','ImplementosController@verPr
 
 //ruta controlador de prestamos
 Route::post('api/prestamo/crear','PrestamoController@registrarPrestamo');
-Route::post('api/prestamo/Actualizar','PrestamoController@actualizarPrestamo');
+Route::post('api/prestamo/actualizar','PrestamoController@actualizarPrestamo');
 Route::get('api/prestamo/pendientes','PrestamoController@PrestamoImplementopendientes');
 
 //ruta envio de correos

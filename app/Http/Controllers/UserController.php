@@ -23,8 +23,8 @@ class UserController extends Controller{
 
         //validar datos
         $validate = \Validator::make($param_array,[
-            'name'      => 'required|alpha',
-            'surname'   => 'required|alpha',
+            'name'      => 'required|regex:/^[\pL\s\-]+$/u',
+            'surname'   => 'required|regex:/^[\pL\s\-]+$/u',
             'email'     => 'required|email|unique:users',
             'password'  => 'required',
             'user_type' => 'required'
@@ -35,7 +35,7 @@ class UserController extends Controller{
         if($validate->fails()){
             $data = array(
                 'status'    => 'error',
-                'code'      => 404,
+                'code'      => 500,
                 'message'   => 'El usuario no se ha creado',
                 'errors'    => $validate->errors()
             );

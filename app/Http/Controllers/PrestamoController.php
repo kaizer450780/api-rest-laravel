@@ -84,14 +84,16 @@ class PrestamoController extends Controller
 
     public function PrestamoImplementopendientes(){
 
-        $reserva = Implementos::join("prestamo","implementos.id","=","prestamo.id_implementos")
-      ->where('prestamo.estado','=','pendiente')
-      ->get(['implementos.id','implementos.placa','implementos.descripcion','prestamo.fecha_inicial','prestamo.fecha_final','prestamo.estado']);
-
+        
+      $prestamo = Prestamo::join("implementos","prestamo.id_implementos","=","implementos.id")
+       ->join("users","prestamo.id_users","=","users.id_user")
+       ->where('prestamo.estado','=','pendiente')
+       ->get(['prestamo.id','implementos.descripcion','implementos.placa', 'prestamo.fecha_inicial','prestamo.fecha_final','prestamo.estado','users.name']);
+       
         return response()->json([
              'code' => 200,
              'status'=> 'sucess',
-             'implementos'=> $reserva
+             'implementos'=> $prestamo
         ]);
      }
 

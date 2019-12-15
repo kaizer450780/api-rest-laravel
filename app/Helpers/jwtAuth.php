@@ -43,6 +43,7 @@ class jwtAuth{
             //devolver los datos decodificados o el token, en funcion de un parametro
                 $data =array(
                     'status'=>'success',
+                    'id'=> $user->id_user,
                     'name_user'=> $user->name,
                     'user_type'=>$user->user_type,
                     'message'=> $jwt
